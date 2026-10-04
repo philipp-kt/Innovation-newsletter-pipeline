@@ -1,0 +1,104 @@
+{
+ "_readme": "Example taxonomy.json for the newsletter digest pipeline. This is a template with fictional entities, not a real watchlist — replace watchlist/frontier_labs/themes with your own tracked companies and topics. Keep the top-level shape (version, watchlist, frontier_labs, themes, selection_rules): newsletter_prefilter.py and newsletter_render.py read exactly these keys. NOTE: RSS/podcast feed sources are NOT configured here — they live in your scheduled-task prompt (or, if you've split them out per the repo README, in config/rss_sources.example.yaml). This file only drives story classification, not fetching.",
+
+ "version": "0.1.0-example",
+
+ "watchlist": [
+  {
+   "canonical": "Example Robotics Corp",
+   "aliases": ["Example Robotics Corp", "Example Robotics", "ERC"],
+   "theme": "",
+   "subject_only": false
+  },
+  {
+   "canonical": "Sample Energy Systems",
+   "aliases": ["Sample Energy Systems", "SampleEnergy"],
+   "theme": "",
+   "subject_only": false
+  },
+  {
+   "canonical": "Acme Compute",
+   "aliases": ["Acme Compute", "Acme"],
+   "theme": "frontier-tech",
+   "subject_only": true
+  },
+  {
+   "canonical": "Fictional Cloud Co",
+   "aliases": ["Fictional Cloud Co", "Fictional Cloud"],
+   "theme": "breakthrough-tech",
+   "subject_only": true
+  },
+  {
+   "canonical": "Placeholder Semiconductors",
+   "aliases": ["Placeholder Semiconductors", "Placeholder Semi"],
+   "theme": "",
+   "subject_only": false
+  }
+ ],
+
+ "frontier_labs": {
+  "_comment": "Entities here are ALWAYS treated as subject_only by the prefilter script (see newsletter_prefilter.py build_alias_index) — they promote only when the lab itself is the subject of the story, not on a passing mention.",
+  "entities": [
+   {
+    "canonical": "Example Frontier Labs",
+    "aliases": ["Example Frontier Labs", "ExampleFrontier", "ExFL"]
+   },
+   {
+    "canonical": "Sample Intelligence",
+    "aliases": ["Sample Intelligence", "SampleAI"]
+   },
+   {
+    "canonical": "Fictional Research Group",
+    "aliases": ["Fictional Research Group", "FRG"]
+   }
+  ]
+ },
+
+ "themes": [
+  {
+   "id": "frontier-tech",
+   "name": "Frontier technology developments",
+   "definition": "Major capability releases, performance milestones, or strategic moves by the leading labs/companies in your tracked field. Frontier-lab watchlist entries promote only when the lab is the subject of the story — a story centered on a frontier entity's own revenue, growth, or fundraising trajectory counts as subject-only, not just single-product announcements."
+  },
+  {
+   "id": "breakthrough-tech",
+   "name": "Breakthrough technical or commercial milestones",
+   "definition": "Significant, verifiable technical or commercial milestones in your tracked domain (e.g. a validated performance record, a peer-reviewed result, a commercial deployment contract). HIGH BAR (see selection_rules.high_bar_themes) — promotes only for genuine breakthroughs, not routine funding, hiring, roadmap talk, conference appearances, or opinion pieces.",
+   "keywords": ["breakthrough", "milestone", "record", "commercial deployment"]
+  },
+  {
+   "id": "sector-funding-ma",
+   "name": "Sector funding, deals & M&A",
+   "definition": "Funding rounds, contract/program awards, new entrants, valuations, and M&A in your tracked sector. Routine small-dollar activity should only promote above a size/significance threshold you define, not on dollar amount alone.",
+   "keywords": ["funding round", "acquisition", "merger", "valuation", "contract award"]
+  },
+  {
+   "id": "regulation-policy",
+   "name": "Regulation & policy",
+   "definition": "Regulatory or legislative developments specific to your tracked domain. Promotes to Section 1 even without a named watchlist company, but only when the policy content is actually about your tracked domain — not general business/political news that merely mentions a watchlist company.",
+   "keywords": ["regulation", "policy", "legislation", "guidance"]
+  },
+  {
+   "id": "adoption-integration",
+   "name": "Adoption & real-world integration",
+   "definition": "Real-world adoption, integration, or operational use of the tracked technology by organizations outside the frontier/watchlist set — e.g. a hospital, government agency, or enterprise deploying it at scale.",
+   "keywords": ["adoption", "deployment", "pilot program", "rollout"]
+  }
+ ],
+
+ "selection_rules": {
+  "email_mode": "two_section_audit",
+  "_email_mode_note": "two_section_audit includes both Section 1 (highlighted) and Section 2 (everything else) in digest.html/plaintext.txt. section1_only omits Section 2 from those two files. --md-dest from newsletter_render.py always gets both sections regardless of this setting.",
+
+  "theme_priority_order": ["breakthrough-tech", "frontier-tech", "regulation-policy", "sector-funding-ma", "adoption-integration"],
+  "_theme_priority_order_note": "Order Section 1 items within a topic by theme priority; themes not listed here sort last.",
+
+  "high_bar_themes": {
+   "breakthrough-tech": "Promote only for a genuine, significant, verifiable breakthrough (e.g. a validated record, a peer-reviewed result, a real commercial deployment contract) — NOT routine funding, hiring, roadmap talk, conference appearances, or opinion pieces. A named watchlist company/entity still auto-promotes on mention regardless of this bar; the high bar applies only to bare theme-keyword hits with no watchlist entity involved."
+  },
+  "_high_bar_themes_note": "Generalized version of the original per-domain fields (e.g. fusion_significance_threshold, quantum_significance_threshold) into one map keyed by theme id, so you can add a high bar to any theme without adding a new field name each time.",
+
+  "drive_upload_mode": "always_manual",
+  "_drive_upload_mode_note": "auto: attempt cloud-storage archive upload, retry once per file on failure, fall back to direct delivery for that file. always_manual: skip the archive upload entirely, always deliver via direct attachment. always_drive: attempt the archive upload with no fallback. Missing this key defaults to always_manual."
+ }
+}

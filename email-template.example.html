@@ -1,0 +1,117 @@
+<!--
+=================================================================
+ INNOVATION DIGEST — CANONICAL EMAIL FORMAT (do not redesign)
+=================================================================
+Render the daily combined digest EXACTLY in this structure. Fill the
+{{PLACEHOLDERS}} and repeat the marked blocks. Keep ALL inline styles
+verbatim — email clients need inline CSS. Do not add new sections,
+fonts, colours, tables, or images beyond what's specified here.
+Output ONE <div> (this whole file with placeholders replaced) as the
+Gmail htmlBody.
+
+UPDATED 2026-09-15: extended to the taxonomy's current five topics
+(Domain 3 and Domain 4 added alongside the original
+Domain 1/AI/Domain 2) and synced with a render-script fix that (a) makes
+Section-1 items actually follow this file's one-line "summary +
+source →" link style — the render script had drifted to showing the
+story headline as a near-black, undecorated link, visually
+indistinguishable from plain text, which read as "no links" — and
+(b) drops the story headline entirely everywhere it's displayed; this
+template never showed headlines to begin with, only the one-sentence
+summary. Headlines are still kept in the underlying db and the
+stories-json export as raw data, just not rendered.
+
+RULES
+- Root font: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif. max-width 700px.
+- Topic order everywhere: Domain 1, then AI / Tech / Robotics, then Domain 2,
+  then Domain 3, then Domain 4.
+- Topic accent colours: Domain 1 #7c3aed · AI #2563eb · Domain 2 #b45309 ·
+  Fusion #dc2626 · Domain 4 #0891b2.
+- SECTION 1 = highlighted (selected=1). SECTION 2 = everything else.
+- Each Section-1 item = ONE row: bold one-sentence summary + " source →" link,
+  then a small second line: green "why promoted" reasons + " · in: <newsletter(s)>".
+- "why" reasons are short, e.g. "watchlist: Chai Discovery", "frontier lab (subject): OpenAI",
+  "theme: Physical AI & robotics". Join multiple with "; ". Never dump raw theme IDs
+  (write "Physical AI & robotics", not "physical-ai-robotics").
+- Section-2 items = compact <li>: summary + " source →" + grey "(via <newsletter>)".
+- Every item must have a working link — use the newsletter's own link. If truly none, omit the <a>.
+- Cross-topic banner: only if a company appears in selected stories of >=2 topics that day; else omit that banner div.
+- If a topic has no highlighted items, omit its Section-1 sub-header (same for Section-2).
+- Subject line: "Innovation Digest — Combined — <Weekday DD Mon YYYY>".
+=================================================================
+-->
+<div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;max-width:700px;line-height:1.5">
+
+  <h2 style="margin:0 0 2px">Innovation Digest — Combined</h2>
+  <div style="color:#666;font-size:13px;margin-bottom:8px">{{WEEKDAY}}, {{DD MON YYYY}} · Domain 1 {{N_Domain 1}} · AI {{N_AI}} · Domain 2 {{N_Domain 2}} · Fusion {{N_FUSION}} · Domain 4 {{N_Domain 4}} stories</div>
+
+  <!-- OPTIONAL cross-topic banner; omit entire div if no company spans >=2 topics -->
+  <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:6px;padding:8px 12px;font-size:12.5px;color:#3730a3;margin-bottom:16px"><b>Cross-topic threads:</b> {{Company}} <span style="color:#6366f1">(AI, Domain 2)</span> · {{Company}} <span style="color:#6366f1">(AI, Domain 1)</span></div>
+
+  <!-- ================= SECTION 1 ================= -->
+  <div style="font-weight:800;font-size:13px;border-bottom:2px solid #111;padding-bottom:3px;margin:14px 0 8px">SECTION 1 — HIGHLIGHTED</div>
+
+  <!-- ---- repeat this TOPIC block for each of Domain 1 / ai / Domain 2 / fusion / Domain 4 that have highlights ---- -->
+  <div style="font-weight:700;font-size:12px;letter-spacing:.04em;color:#7c3aed;text-transform:uppercase;margin:10px 0 6px">Domain 1</div>
+
+    <!-- repeat this ITEM block per highlighted story -->
+    <div style="margin-bottom:8px">
+      <div style="font-size:13.5px;font-weight:600">{{One-sentence summary.}} <a href="{{URL}}" style="color:#2563eb;text-decoration:none">source&nbsp;&rarr;</a></div>
+      <div style="font-size:11px;margin-top:1px"><span style="color:#0a7d33">{{why reasons}}</span> · <span style="color:#888">in: {{Newsletter A + Newsletter B}}</span></div>
+    </div>
+    <!-- /ITEM -->
+
+  <div style="font-weight:700;font-size:12px;letter-spacing:.04em;color:#2563eb;text-transform:uppercase;margin:10px 0 6px">AI / Tech / Robotics</div>
+    <div style="margin-bottom:8px">
+      <div style="font-size:13.5px;font-weight:600">{{summary}} <a href="{{URL}}" style="color:#2563eb;text-decoration:none">source&nbsp;&rarr;</a></div>
+      <div style="font-size:11px;margin-top:1px"><span style="color:#0a7d33">{{why reasons}}</span> · <span style="color:#888">in: {{newsletters}}</span></div>
+    </div>
+
+  <div style="font-weight:700;font-size:12px;letter-spacing:.04em;color:#b45309;text-transform:uppercase;margin:10px 0 6px">Domain 2</div>
+    <div style="margin-bottom:8px">
+      <div style="font-size:13.5px;font-weight:600">{{summary}} <a href="{{URL}}" style="color:#2563eb;text-decoration:none">source&nbsp;&rarr;</a></div>
+      <div style="font-size:11px;margin-top:1px"><span style="color:#0a7d33">{{why reasons}}</span> · <span style="color:#888">in: {{newsletters}}</span></div>
+    </div>
+
+  <div style="font-weight:700;font-size:12px;letter-spacing:.04em;color:#dc2626;text-transform:uppercase;margin:10px 0 6px">Domain 3</div>
+    <div style="margin-bottom:8px">
+      <div style="font-size:13.5px;font-weight:600">{{summary}} <a href="{{URL}}" style="color:#2563eb;text-decoration:none">source&nbsp;&rarr;</a></div>
+      <div style="font-size:11px;margin-top:1px"><span style="color:#0a7d33">{{why reasons}}</span> · <span style="color:#888">in: {{newsletters}}</span></div>
+    </div>
+
+  <div style="font-weight:700;font-size:12px;letter-spacing:.04em;color:#0891b2;text-transform:uppercase;margin:10px 0 6px">Domain 4</div>
+    <div style="margin-bottom:8px">
+      <div style="font-size:13.5px;font-weight:600">{{summary}} <a href="{{URL}}" style="color:#2563eb;text-decoration:none">source&nbsp;&rarr;</a></div>
+      <div style="font-size:11px;margin-top:1px"><span style="color:#0a7d33">{{why reasons}}</span> · <span style="color:#888">in: {{newsletters}}</span></div>
+    </div>
+
+  <!-- ================= SECTION 2 ================= -->
+  <div style="font-weight:800;font-size:13px;border-bottom:2px solid #ccc;padding-bottom:3px;margin:16px 0 8px">SECTION 2 — EVERYTHING ELSE</div>
+
+  <div style="font-weight:700;font-size:12px;letter-spacing:.04em;color:#7c3aed;text-transform:uppercase;margin:10px 0 6px">Domain 1</div>
+  <ul style="margin:0 0 4px;padding-left:18px;font-size:13px;color:#333">
+    <li style="margin-bottom:4px">{{summary}} <a href="{{URL}}" style="color:#2563eb;text-decoration:none">source&nbsp;&rarr;</a> <span style="color:#999">(via {{Newsletter}})</span></li>
+  </ul>
+
+  <div style="font-weight:700;font-size:12px;letter-spacing:.04em;color:#2563eb;text-transform:uppercase;margin:10px 0 6px">AI / Tech / Robotics</div>
+  <ul style="margin:0 0 4px;padding-left:18px;font-size:13px;color:#333">
+    <li style="margin-bottom:4px">{{summary}} <a href="{{URL}}" style="color:#2563eb;text-decoration:none">source&nbsp;&rarr;</a> <span style="color:#999">(via {{Newsletter}})</span></li>
+  </ul>
+
+  <div style="font-weight:700;font-size:12px;letter-spacing:.04em;color:#b45309;text-transform:uppercase;margin:10px 0 6px">Domain 2</div>
+  <ul style="margin:0 0 4px;padding-left:18px;font-size:13px;color:#333">
+    <li style="margin-bottom:4px">{{summary}} <a href="{{URL}}" style="color:#2563eb;text-decoration:none">source&nbsp;&rarr;</a> <span style="color:#999">(via {{Newsletter}})</span></li>
+  </ul>
+
+  <div style="font-weight:700;font-size:12px;letter-spacing:.04em;color:#dc2626;text-transform:uppercase;margin:10px 0 6px">Domain 3</div>
+  <ul style="margin:0 0 4px;padding-left:18px;font-size:13px;color:#333">
+    <li style="margin-bottom:4px">{{summary}} <a href="{{URL}}" style="color:#2563eb;text-decoration:none">source&nbsp;&rarr;</a> <span style="color:#999">(via {{Newsletter}})</span></li>
+  </ul>
+
+  <div style="font-weight:700;font-size:12px;letter-spacing:.04em;color:#0891b2;text-transform:uppercase;margin:10px 0 6px">Domain 4</div>
+  <ul style="margin:0 0 4px;padding-left:18px;font-size:13px;color:#333">
+    <li style="margin-bottom:4px">{{summary}} <a href="{{URL}}" style="color:#2563eb;text-decoration:none">source&nbsp;&rarr;</a> <span style="color:#999">(via {{Newsletter}})</span></li>
+  </ul>
+
+  <div style="border-top:1px solid #e5e7eb;margin-top:16px;padding-top:9px;color:#aaa;font-size:11px">Combined view · taxonomy {{VERSION}} · newsletter-native links.</div>
+</div>
